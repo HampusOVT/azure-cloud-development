@@ -204,13 +204,81 @@ You now have:
 - A `Media` table initialized via `init.sql`
 
 
-## 🚀 Run Locally
+## 3. Configure and Start the Backend Locally
+
+### 📁 1. Navigate to the Backend Directory
 
 ```bash
 cd backend
+```
+
+This changes your terminal's working directory to the `backend/` folder, where the Node.js backend code resides. This is necessary to install dependencies and run the application server.
+
+---
+
+### 🔐 2. Retrieve the Azure Storage Connection String
+
+```bash
+az storage account show-connection-string \
+  --name mediavaultstorageproject \
+  --resource-group mediavault-rg \
+  --query connectionString \
+  --output tsv
+```
+
+#### 💡 What This Does:
+- Uses the Azure CLI to **generate a full authentication string** for your Blob Storage account.
+- `--name`: Specifies the name of your storage account.
+- `--resource-group`: The Azure resource group it belongs to.
+- `--query connectionString`: Extracts just the connection string from the output using JMESPath syntax.
+- `--output tsv`: Outputs it as plain text (tab-separated value) for easy use in scripts or pasting.
+
+Copy the result of this command.
+
+---
+
+### 🧾 3. Add the Connection String to Your `.env` File
+
+Open your `.env` file and update the following:
+
+```env
+AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=https;AccountName=...;AccountKey=...;EndpointSuffix=core.windows.net
+```
+
+> This connection string allows the backend to authenticate to Azure Blob Storage using the SDK.
+
+---
+
+### 📦 4. Install Node.js Dependencies
+
+```bash
 npm install
+```
+
+Installs all packages listed in `package.json`, including:
+
+- `express`: Web server
+- `mssql`: SQL Server driver
+- `@azure/storage-blob`: Blob Storage SDK
+- `multer`: File uploads
+
+---
+
+### ▶️ 5. Start the Backend Server
+
+```bash
 node index.js
 ```
+
+Starts the Express server. It:
+- Serves the static front-end form
+- Handles `POST /upload` for media upload
+- Handles `GET /media` to return uploaded items
+- Connects to Azure SQL and Azure Blob Storage using your `.env` configuration
+
+> You should see `MediaVault running on port 3000` in your terminal.
+
+---
 
 Open browser to: `http://localhost:3000`
 

@@ -9,7 +9,7 @@ const uploadToBlob = require('./upload');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 const config = {
     user: process.env.AZURE_SQL_USER,
@@ -48,4 +48,4 @@ app.get('/media', async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('MediaVault running on port 3000'));
+app.listen(8080, () => console.log('MediaVault running on port 8080'));
