@@ -285,30 +285,88 @@ Open browser to: `http://localhost:3000`
 ---
 
 ## 📤 Deploy to Azure App Service
+### 1. 🔧 Create App Service Plan
 
 ```bash
-az appservice plan create --name mediavault-plan --resource-group mediavault-rg --sku B1 --is-linux
-az webapp create --resource-group mediavault-rg --plan mediavault-plan --name mediavaultapp123 --runtime "NODE|18-lts"
-az webapp deployment source config-local-git --name mediavaultapp123 --resource-group mediavault-rg
+az appservice plan create \
+  --name mediavault-plan \
+  --resource-group mediavault-rg \
+  --sku B1 \
+  --is-linux
+```
+
+Creates a shared hosting plan using Linux with basic pricing tier.
+
+---
+
+### 2. 🌐 Create Web App
+
+```bash
+az webapp create \
+  --resource-group mediavault-rg \
+  --plan mediavault-plan \
+  --name mediavaultapp123 \
+  --runtime "NODE:22-lts"
+```
+
+- This creates a web app named `mediavaultapp123`
+- You can access it at: `https://mediavaultapp123.azurewebsites.net`
+
+---
+
+### 3. 🔐 Set App Settings (.env variables)
+
+```bash
+az webapp config appsettings set \
+  --name mediavaultapp123 \
+  --resource-group mediavault-rg \
+  --settings \
+  AZURE_STORAGE_CONNECTION_STRING="your-connection-string" \
+  AZURE_SQL_SERVER="mediavaultsql.database.windows.net" \
+  AZURE_SQL_DATABASE="mediavaultdb" \
+  AZURE_SQL_USER="azureuser" \
+  AZURE_SQL_PASSWORD="MySecureP@ssword123"
 ```
 
 ---
 
-## 📂 Environment Variables (.env)
+### 4. 📤 Deploy Your App
 
+###  ZIP Deployment
+
+```bash
+zip -r app.zip *
+az webapp deploy \
+  --resource-group mediavault-rg \
+  --name mediavaultapp123 \
+  --src-path app.zip \
+  --type zip
 ```
-AZURE_STORAGE_CONNECTION_STRING=your_connection_string
-AZURE_SQL_SERVER=mediavaultsql.database.windows.net
-AZURE_SQL_DATABASE=mediavaultdb
-AZURE_SQL_USER=azureuser
-AZURE_SQL_PASSWORD=MySecureP@ssword123
+
+Run this from inside your backend folder.
+
+---
+
+## 5. 📊 Enable Logs (Optional)
+
+```bash
+az webapp log config \
+  --name mediavaultapp123 \
+  --resource-group mediavault-rg \
+  --application-logging true \
+  --docker-container-logging filesystem
 ```
 
 ---
 
-## ✅ Done!
+## ✅ Access Your App
 
-Visit your app at:
+Visit:
+
 ```
 https://mediavaultapp123.azurewebsites.net
 ```
+
+You should be able to upload and view media through your deployed backend.
+
+---
