@@ -1,0 +1,1 @@
+{"root":["./src/api.ts","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/state/cartcontext.tsx","./src/ui/app.tsx","./src/ui/cart.tsx","./src/ui/eventdetail.tsx","./src/ui/home.tsx","./src/ui/orders.tsx","./src/ui/uploadimage.tsx","./src/ui/components/eventcard.tsx","./src/ui/components/navbar.tsx"],"version":"5.9.2"}
