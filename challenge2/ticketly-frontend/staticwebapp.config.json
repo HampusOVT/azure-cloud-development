@@ -1,0 +1,25 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  },
+  "routes": [
+    {
+      "route": "/api/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/orders",
+      "allowedRoles": [
+        "authenticated"
+      ]
+    },
+    {
+      "route": "/upload",
+      "allowedRoles": [
+        "authenticated"
+      ]
+    }
+  ]
+}\n
